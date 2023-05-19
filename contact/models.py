@@ -6,8 +6,18 @@ from django.utils import timezone
 # email (email), created_date (date), description (text)
 
 # Depois
-# category (foreign key), show (boolean), owner (foreign key)
-# picture (imagem)
+# category (foreign key), show (boolean), # picture (imagem)
+
+# Depois 2
+# owner (foreign key)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return f'{self.id}. {self.name}'
+
 
 class Contact(models.Model):
     first_name = models.CharField(max_length=50)
@@ -16,6 +26,13 @@ class Contact(models.Model):
     email = models.EmailField(max_length=254, blank=True)
     created_date = models.DateTimeField(default=timezone.now)
     description = models.TextField(max_length=1200, blank=True)
+    show = models.BooleanField(default=True)
+    picture = models.ImageField(blank=True, upload_to='pictures/%Y/%m/')
+    category = models.ForeignKey(
+        Category, 
+        on_delete=models.SET_NULL,
+        blank=True, null=True
+    )
 
     def __str__(self) -> str:
         return f'{self.id}. {self.first_name} {self.last_name}'
