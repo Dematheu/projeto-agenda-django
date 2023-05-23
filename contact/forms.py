@@ -8,39 +8,20 @@ from . import models
 
 
 class ContactForm(forms.ModelForm):
-    first_name = forms.CharField(
-        widget=forms.TextInput(
+    picture = forms.ImageField(
+        widget=forms.FileInput(
             attrs={
-                'class': 'classe-a classe-b',
-                'placeholder': 'Seu nome',
+                'accept': 'image/*',
             }
-        ),
-        label='Primeiro Nome',
-        help_text='Texto de ajuda para o usuário.'
+        )
     )
-
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-
-        # self.fields['first_name'].widget.attrs.update({
-        #     'class': 'classe-a classe-b',
-        #     'placeholder': 'Seu nome - init',
-        # })
 
     class Meta:
         model = models.Contact
         fields = (
             'first_name', 'last_name', 'email',
-            'phone', 'description', 'category',
+            'phone', 'description', 'category', 'picture'
             )
-        # widgets = {
-        #     'first_name': forms.TextInput(
-        #         attrs={
-        #             'class': 'classe-a classe-b',
-        #             'placeholder': 'Seu nome',
-        #         }
-        #     )
-        # }
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -49,7 +30,7 @@ class ContactForm(forms.ModelForm):
 
         if first_name == last_name:
             msg = ValidationError(
-                    'Primeiro nome não pode ser igual o segundo',
+                    'First name and last name must not be the same.',
                     code='invalid'
                 )
             self.add_error('first_name', msg)

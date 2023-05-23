@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-
 from contact.forms import ContactForm
 from contact.models import Contact
 
@@ -8,7 +7,7 @@ from contact.models import Contact
 def create(request):
     form_action = reverse('contact:create')
     if request.method == 'POST':
-        form = ContactForm(data=request.POST)
+        form = ContactForm(request.POST, request.FILES)
         context = {
             'form': form,
             'form_action': form_action,
@@ -41,7 +40,11 @@ def update(request, contact_id):
     )
     form_action = reverse('contact:update', args=(contact_id,))
     if request.method == 'POST':
-        form = ContactForm(data=request.POST, instance=contact)
+        form = ContactForm(
+            data=request.POST,
+            files=request.FILES,
+            instance=contact
+        )
 
         context = {
             'form': form,
