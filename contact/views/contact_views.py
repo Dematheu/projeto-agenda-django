@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from contact.models import Contact
@@ -75,4 +76,12 @@ def contact(request, contact_id):
         request,
         'contact/contact.html',
         context,
+
+from django.shortcuts import render
+
+
+def index(request):
+    return render(
+        request,
+        'contact/index.html',
     )
